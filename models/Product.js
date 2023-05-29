@@ -19,6 +19,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    productImage: {
+        type: String,
+        required: true
+    },
+    productPrice: {
+        type: Number,
+        required: true
+    }
   },
   { timestamps: true }
 );

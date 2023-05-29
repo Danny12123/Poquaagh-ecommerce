@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Product = require('../models/Product')
+const Cart = require('../models/Cart')
 
 //create a product
 router.post('/', async (req,res)=> {
@@ -29,6 +30,20 @@ router.put('/:id', async (req,res)=> {
     }
 });
 
+// add product to cart
+router.post('/:id', async (req,res)=> {
+    try {
+        const product = await Product.findById(req.params.id);
+        const cartPreduct = new Cart(product);
+
+        res
+          .status(200)
+          .send({ message: "Product has been added!", cartPreduct });
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
 // // delete product
 router.delete("/:id", async (req, res) => {
   try {
@@ -45,7 +60,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 // // get product
-router.get("/", async(req,res)=> {
+router.get("/allproduct", async(req,res)=> {
      try {
        const product = await Product.aggregate([{$sample: {
          size: 60
